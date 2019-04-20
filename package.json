@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/unitehenry/simply-finance#readme",
   "dependencies": {
-    "node-tesseract-ocr": "^0.1.0"
+    "imgur": "^0.3.1",
+    "ng-ocr": "^1.6.1",
+    "node-tesseract-ocr": "^0.1.0",
+    "ocr": "^4.0.23",
+    "ocr-by-image-url": "0.0.1",
+    "pkg-config": "^1.1.1",
+    "sap-leonardo": "^0.5.9"
   }
 }

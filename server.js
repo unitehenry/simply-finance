@@ -4,6 +4,8 @@ var app = express();
 var bodyParser = require("body-parser");
 var request = require('request');
 
+const tesseract = require('node-tesseract-ocr');
+
 
 var TesseractModule = require('./server/tesseract.js');
 
@@ -23,7 +25,7 @@ app.get('/transcribeReceipt', function(req, res) {
 	if (res == "") {
 		console.log("Unable to transcribe picture");
 	} else {
-		res.write(text);
+		res.send(text);
 	}
 
 });
