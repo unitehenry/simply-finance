@@ -10,7 +10,12 @@ class AddReceiptButton extends Component {
   }
 
   componentDidMount = () => {
-    this.setState({selector: document.createElement('input')});
+    this.setState({selector: document.getElementById('file')});
+  }
+
+  fileChange = () => {
+    console.log(this.state.selector.files[0].name)
+    //Get mock data from OCR
   }
 
   fileSelect = () => {
@@ -18,15 +23,12 @@ class AddReceiptButton extends Component {
     this.state.selector.click();
   }
 
-  fileUploaded(){
-    console.log('file')
-  }
-
   render(){
 
     return (
       <div>
         <Fab color="primary" aria-label="Add" style={styles.button} onClick={() => {this.fileSelect()}}>
+          <input id="file" type="file" style={{display: 'none'}} onChange={() => this.fileChange()}/>
           <AddIcon />
         </Fab>
       </div>
