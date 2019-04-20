@@ -3,13 +3,19 @@ import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 
-function NavBar(){
+function NavBar(props){
   return(
     <AppBar position="static">
       <Toolbar>
-        <IconButton color="inherit" aria-label="Menu">
-          <MenuIcon />
-        </IconButton>
+        {
+          props.auth ?
+          (
+            null
+          ) :
+          <IconButton color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton>
+        }
         <Typography variant="h6" color="inherit" style={styles.header}>
           SimpliFi
         </Typography>
