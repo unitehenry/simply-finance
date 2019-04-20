@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Typography, Card, CardContent, CardActions, Button } from '@material-ui/core';
+import { Typography, Card, CardContent, Button } from '@material-ui/core';
 
 class Transations extends Component {
 
@@ -35,7 +35,7 @@ function Transaction(){
     <Button style={{width: '100%'}}>
       <Card style={{width: '100%'}}>
         <CardContent>
-          <Typography variant="h6" color="inherit" style={styles.transaction.header}>
+          <Typography variant="h6" color="inherit">
               { "Vendor Name - $35.26" }
           </Typography>
         </CardContent>
@@ -48,11 +48,6 @@ const styles = {
   header: {
     textAlign: 'center',
     margin: '.3em'
-  },
-  transaction: {
-    header: {
-
-    }
   }
 }
 
