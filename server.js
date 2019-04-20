@@ -4,11 +4,29 @@ var app = express();
 var bodyParser = require("body-parser");
 var request = require('request');
 
+
+var TesseractModule = require('./server/tesseract.js');
+
 /* Set up server */
 app.use(express.static("."));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+
+
+
+app.get('/transcribeReceipt', function(req, res) {
+	var query = req.query;
+	var path = query.path;
+
+	var text = TesseractModule.transcribe(path);
+	if (res == "") {
+		console.log("Unable to transcribe picture");
+	} else {
+		res.write(text);
+	}
+
+});
 
 
 /* Listen on port 8080 */
