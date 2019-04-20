@@ -1,0 +1,22 @@
+{
+  "name": "simplifi",
+  "version": "1.0.0",
+  "description": "Simplify your finances",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unitehenry/simply-finance.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unitehenry/simply-finance/issues"
+  },
+  "homepage": "https://github.com/unitehenry/simply-finance#readme",
+  "dependencies": {
+    "node-tesseract-ocr": "^0.1.0"
+  }
+}
