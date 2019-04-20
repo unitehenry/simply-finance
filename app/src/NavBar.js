@@ -1,6 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Button, Typography } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 
 
 function NavBar(props){
@@ -12,7 +11,7 @@ function NavBar(props){
           (
             ['transactions', 'budget','about', 'sign out'].map((item) => {
               return (
-                <Button style={styles.button}>{item}</Button>
+                <Button style={styles.button} key={item}>{item}</Button>
               )
             })
           ) :
