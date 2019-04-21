@@ -29,10 +29,12 @@ class TextFields extends React.Component {
     age: '',
     multiline: 'Controlled',
     currency: 'EUR',
+    income: 0
   };
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+    this.props.select(this.state[event.target.name])
   };
 
   render() {
@@ -42,11 +44,14 @@ class TextFields extends React.Component {
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="Income"
-          label="Income"
+          label="Income in dollars"
           className={classes.textField}
-          type="Income"
+          type="number"
           autoComplete="Income"
           margin="normal"
+          name="income"
+          value={this.state.income}
+          onChange = {(e) => this.handleChange(e)}
         />
       </form>
     );

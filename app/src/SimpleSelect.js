@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 const styles = theme => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap',   
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -34,6 +34,7 @@ class SimpleSelect extends React.Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    this.props.select(this.state[event.target.name]);
   };
 
   render() {
@@ -42,38 +43,40 @@ class SimpleSelect extends React.Component {
     return (
       <form className={classes.root} autoComplete="off">
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-simple">Age</InputLabel>
+          <InputLabel htmlFor="percent">Percent</InputLabel>
           <Select
+            native
             value={this.state.age}
-            onChange={this.handleChange}
+            //onChange={this.handleChange('age')}
+            input={<FilledInput name="age" id="filled-age-native-simple" />}
+            onChange = {(e) => this.handleChange(e)}
             inputProps={{
-              name: 'age',
-              id: 'age-simple',
+              name: 'percent',
+              id: 'Percent',
             }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={5}>5%</MenuItem>
-            <MenuItem value={10}>10%</MenuItem>
-            <MenuItem value={15}>15%</MenuItem>
-            <MenuItem value={20}>20%</MenuItem>
-            <MenuItem value={25}>25%</MenuItem>
-            <MenuItem value={30}>30%</MenuItem>
-            <MenuItem value={35}>35%</MenuItem>
-            <MenuItem value={40}>40%</MenuItem>
-            <MenuItem value={45}>45%</MenuItem>
-            <MenuItem value={50}>50%</MenuItem>
-            <MenuItem value={55}>55%</MenuItem>
-            <MenuItem value={60}>60%</MenuItem>
-            <MenuItem value={65}>65%</MenuItem>
-            <MenuItem value={70}>70%</MenuItem>
-            <MenuItem value={75}>75%</MenuItem>
-            <MenuItem value={80}>80%</MenuItem>
-            <MenuItem value={85}>85%</MenuItem>
-            <MenuItem value={90}>90%</MenuItem>
-            <MenuItem value={95}>95%</MenuItem>
-            <MenuItem value={100}>100%</MenuItem>        
+            <option value=""/>
+
+            <option value={5}>5%</option>
+            <option value={10}>10%</option>
+            <option value={15}>15%</option>
+            <option value={20}>20%</option>
+            <option value={25}>25%</option>
+            <option value={30}>30%</option>
+            <option value={35}>35%</option>
+            <option value={40}>40%</option>
+            <option value={45}>45%</option>
+            <option value={50}>50%</option>
+            <option value={55}>55%</option>
+            <option value={60}>60%</option>
+            <option value={65}>65%</option>
+            <option value={70}>70%</option>
+            <option value={75}>75%</option>
+            <option value={80}>80%</option>
+            <option value={85}>85%</option>
+            <option value={90}>90%</option>
+            <option value={95}>95%</option>
+            <option value={100}>100%</option>        
           </Select>
         </FormControl>
       </form>

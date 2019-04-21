@@ -21,9 +21,9 @@ const styles = theme => ({
 
 class Progress extends React.Component {
   state = {
-    food: 0,
+    food: 50,
     merch: 5,
-    entertainment: 85,
+    entertainment: 35,
     other: 10,
   };
 
