@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Fab } from '@material-ui/core';
+import { Fab, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import * as $ from 'jquery';
@@ -7,11 +7,13 @@ import * as $ from 'jquery';
 class AddReceiptButton extends Component {
 
   state = {
-    selector: null
+    selector: null,
+    detailsOpen: false
   }
 
   componentDidMount = () => {
     this.setState({selector: document.getElementById('file')});
+    const component = this;
 
     $("document").ready(() => {
       $('input[type=file]').on("change", () => {
@@ -44,7 +46,10 @@ class AddReceiptButton extends Component {
             data: {
               'image': image
             },
-           success: function(data) { console.log(data.data.link); }
+           success: function(data) {
+             console.log(data.data.link);
+             component.setState({detailsOpen: true});
+           }
           });
         }
 
@@ -57,6 +62,10 @@ class AddReceiptButton extends Component {
     this.state.selector.click();
   }
 
+  closeDialog = () => {
+    this.setState({detailsOpen: false})
+  }
+
   render(){
 
     return (
@@ -67,10 +76,38 @@ class AddReceiptButton extends Component {
           </form>
           <AddIcon />
         </Fab>
+        <ImageConfirm open={this.state.detailsOpen} closeDialog={() => this.closeDialog()}/>
       </div>
     )
   }
 
+}
+
+function ImageConfirm(props){
+  return(
+    <Dialog open={props.open} fullWidth={true}>
+      <div>
+        <DialogTitle>Confirm Details</DialogTitle>
+        <DialogContent>
+          <div style={styles.itemField}>
+            <TextField
+              value="red bull"
+              type="text"
+              style={{width: '100%'}}
+            />
+            <TextField
+              value={4.23}
+              type="number"
+              style={{width: '100%'}}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button style={styles.dialogButton} onClick={() => props.closeDialog()}>save</Button>
+        </DialogActions>
+      </div>
+    </Dialog>
+  )
 }
 
 const styles = {
@@ -82,6 +119,15 @@ const styles = {
     left: 'auto',
     position: 'fixed',
     backgroundColor: '#1fcd81'
+  },
+  itemField: {
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  dialogButton: {
+    margin: '1em',
+    backgroundColor: '#1fcd81',
+    color: '#fff'
   }
 }
 
