@@ -1,10 +1,10 @@
 import React from 'react';
 import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
-
+import Logo from './SimpliFiLogo.png'
 
 function NavBar(props){
   return(
-    <AppBar position="static">
+    <AppBar position="static" style={styles.topbar}>
       <Toolbar>
         {
           !props.auth ?
@@ -15,7 +15,7 @@ function NavBar(props){
               )
             })
           ) :
-          <Typography variant="h6" style={{color: 'inherit'}}>SimpliFi</Typography>
+          <img src={Logo} style={styles.image}/>
         }
       </Toolbar>
     </AppBar>
@@ -23,11 +23,17 @@ function NavBar(props){
 }
 
 const styles = {
+  topbar: {
+    backgroundColor: '#1fcd81'
+  },
   header: {
     margin: '1em'
   },
   button: {
     color: 'inherit'
+  },
+  image: {
+    width: '150px'
   }
 }
 
