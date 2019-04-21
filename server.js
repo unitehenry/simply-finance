@@ -8,13 +8,24 @@ var request = require('request');
 const tesseract = require('node-tesseract-ocr');
 var imgur = require('imgur');
 
+// http://localhost:8080/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png
+
 
 /* Set up server */
 app.use(express.static("."));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 
+
+// app.get('/classifyData', function (req, res) {
+// 	var jsObj = JSON.parse(req.query.json);
+
+// 	for (obj in jsObj) {
+// 		console.log(obj);
+// 	}
+
+// });
 
 
 
@@ -26,14 +37,10 @@ app.get('/transcribeReceipt', function(req, res) {
 	var url = query.image;
 	console.log(url);
 
-
 	var filename = './resources/imgs/pic.' + url.split('.').pop();
-
 	var writeFileStream = fs.createWriteStream(filename);request(url).pipe(writeFileStream).on('close', function() {
 	  console.log(url, 'saved to', filename);
 	})
-
-
 
 	const config = {
 		lang: 'eng',
