@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import config from './environment';
 
 //Firebase Configuration

@@ -1,29 +1,53 @@
 import React, { Component } from 'react';
-import {MenuItem, TextField, Button, Card} from '@material-ui/core';
+import {TextField, Button, Card} from '@material-ui/core';
 
+//Firebase Configuration
+const firebase = require('firebase/app');
+require('firebase/auth');
 
 class Login extends Component {
   state = {
     header: true,
     nameTextField: true,
     login: true,
-    signup: false
-  }
-  userInfo = {
-    name: '',
-    email: '',
-    password: ''
+    signup: false,
+    userInfo: {
+      name: '',
+      email: '',
+      password: ''
+    }
   }
 
 
-  handleNameChange(event) {
-    this.setState({name: event.target.value})
+  handleChange = (event) => {
+    let userInfo = this.state.userInfo;
+    userInfo[event.target.name] = event.target.value;
+    this.setState({userInfo: userInfo});
   }
-  handleEmailChange(event) {
-    this.setState({email: event.target.value})
+
+  submit = () => {
+    firebase.auth().signInWithEmailAndPassword(this.state.userInfo.email, this.state.userInfo.password)
+    .then((res) => {
+      this.props.setUid(res.user.uid);
+    })
+    .catch(function(err) {
+      if(err){alert(err.message)}
+    });
   }
-  handlePassChange(event) {
-    this.setState({password: event.target.value})
+
+  createUser = () => {
+    firebase.auth().createUserWithEmailAndPassword(this.state.userInfo.email, this.state.userInfo.password)
+    .then((res) => {
+      this.setState({userInfo: {email: '', password: '', name: ''}})
+      this.goBack();
+    })
+    .catch(function(err) {
+      if(err){alert(err.message)}
+    });
+  }
+
+  goBack = () => {
+    this.setState({signup: false,login: true, nameTextField: true, header: true})
   }
 
   render() {
@@ -37,42 +61,42 @@ class Login extends Component {
           (<h1 style={styles.header}>SimpliFi SignUp</h1>)
         }
 
-        <body style={styles.body}>
+        <div style={styles.body}>
           {!this.state.nameTextField ?
             (<TextField
-              id="standard-name"
               label="Name"
-              value = {this.state.name}
-              onChange={this.handleNameChange.bind(this)}
+              value = {this.state.userInfo.name}
+              onChange={(e) => this.handleChange(e)}
               margin="normal"
               style={styles.input}
+              name="name"
             />)
             :
             null
           }
           <div>
             <TextField
-              id="standard-name"
               label="Email Address"
-              value = {this.state.email}
-              onChange={this.handleEmailChange.bind(this)}
+              value = {this.state.userInfo.email}
+              onChange={(e) => this.handleChange(e)}
               margin="normal"
               style={styles.input}
+              name="email"
             />
           </div>
           <div>
             <TextField
-              id="standard-name"
               label="Password"
-              value= {this.state.password}
-              onChange={this.handlePassChange.bind(this)}
+              value= {this.state.userInfo.password}
+              onChange={(e) => this.handleChange(e)}
               margin="normal"
               style={styles.input}
               type='password'
+              name="password"
             />
           </div>
           {this.state.login ?
-            (<Button variant="contained" style={styles.button1} onClick={()=> {console.log({email: this.state.email, password: this.state.password})}}
+            (<Button variant="contained" style={styles.button1} onClick={()=> this.submit()}
           >Login</Button>)
           :
           null
@@ -89,14 +113,14 @@ class Login extends Component {
             :
             (
             <div>
-              <Button variant="contained" style={styles.button1} onClick={()=> {console.log({name: this.state.name, email: this.state.email, password: this.state.password})}}
+              <Button variant="contained" style={styles.button1} onClick={()=> {this.createUser()}}
               >Create</Button>
-              <Button variant="contained" style={styles.button2} onClick={()=> {this.setState({signup: false,login: true,nameTextField: true,header: true})}}
+            <Button variant="contained" style={styles.button2} onClick={()=> {this.goBack()}}
               >Go Back</Button>
             </div>)
           }
 
-        </body>
+        </div>
         </Card>
       </div>
     );
@@ -122,7 +146,8 @@ const styles = {
     margin: '1em'
   },
   card: {
-    margin: '7em 2em 2em '
+    margin: '7em 2em 2em ',
+    paddingBottom: '1em'
   }
 }
 
