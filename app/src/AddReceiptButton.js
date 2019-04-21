@@ -14,7 +14,8 @@ class AddReceiptButton extends Component {
   state = {
     selector: null,
     detailsOpen: false,
-    receiptUrl: ''
+    receiptUrl: '',
+    reviewItems: []
   }
 
   componentDidMount = () => {
@@ -53,10 +54,16 @@ class AddReceiptButton extends Component {
               'image': image
             },
            success: function(data) {
-             console.log(data.data.link);
              component.setState({receiptUrl: data.data.link})
-             component.setState({detailsOpen: true});
-             //API call to server for parsing goes here
+             
+             $.ajax({
+               url: `http://localhost:8080/transcribeReceipt?image=${data.data.link}`,
+               type: 'GET',
+               success: function(data){
+                 console.log(data);
+                 component.setState({reviewItems: data, detailsOpen: true});
+               }
+             })
            }
           });
         }
@@ -105,6 +112,12 @@ class AddReceiptButton extends Component {
     this.setState({detailsOpen: false})
   }
 
+  handleChange = (e) => {
+    const items = this.state.reviewItems;
+    items[e.target.name.i][e.target.name.type] = e.target.value;
+    this.setState({reviewItems: items});
+  }
+
   render(){
 
     return (
@@ -115,7 +128,7 @@ class AddReceiptButton extends Component {
           </form>
           <AddIcon />
         </Fab>
-        <ImageConfirm open={this.state.detailsOpen} closeDialog={() => this.closeDialog()}/>
+        <ImageConfirm open={this.state.detailsOpen} closeDialog={() => this.closeDialog()} reviewItems={this.state.reviewItems}/>
       </div>
     )
   }
@@ -128,18 +141,26 @@ function ImageConfirm(props){
       <div>
         <DialogTitle>Confirm Details</DialogTitle>
         <DialogContent>
-          <div style={styles.itemField}>
-            <TextField
-              value="red bull"
-              type="text"
-              style={{width: '100%'}}
-            />
-            <TextField
-              value={4.23}
-              type="number"
-              style={{width: '100%'}}
-            />
-          </div>
+          {
+            props.reviewItems.map((item, i) => {
+              return (
+                <div style={styles.itemField} key={i}>
+                  <TextField
+                    name={{type: 'name', index: i}}
+                    value={item.name}
+                    type="text"
+                    style={{width: '100%'}}
+                  />
+                  <TextField
+                    name={{type: 'price', index: i}}
+                    value={item.price}
+                    type="number"
+                    style={{width: '100%'}}
+                  />
+                </div>
+              )
+            })
+          }
         </DialogContent>
         <DialogActions>
           <Button style={styles.dialogButton} onClick={() => props.closeDialog()}>save</Button>

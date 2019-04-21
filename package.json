@@ -4,7 +4,8 @@
   "description": "Simplify your finances",
   "main": "index.js",
   "scripts": {
-    "test": "npm run"
+    "test": "npm run",
+    "start": "node server"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,9 @@
   },
   "homepage": "https://github.com/unitehenry/simply-finance#readme",
   "dependencies": {
-    "node-tesseract-ocr": "^0.1.0"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "node-tesseract-ocr": "^0.1.0",
+    "request": "^2.88.0"
   }
 }
