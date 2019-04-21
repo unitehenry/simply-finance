@@ -18,7 +18,7 @@ class Progress extends React.Component {
                 <React.Fragment key={category}>
                   <Typography variant="h5" component="h3" style={{padding: '1em'}}>
                     <label>{ category === '' ? 'Other' : category }</label>
-                    <LinearProgress variant="determinate" value={98.99}/>
+                    <LinearProgress variant="determinate" value={33}/>
                   </Typography>
                   <br />
                 </React.Fragment>
