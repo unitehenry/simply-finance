@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import Logo from './SimpliFiLogo.png'
 
 function NavBar(props){
@@ -15,7 +15,7 @@ function NavBar(props){
               )
             })
           ) :
-          <img src={Logo} style={styles.image} alt="logo"/>
+          <img src={Logo} style={styles.image}/>
         }
       </Toolbar>
     </AppBar>

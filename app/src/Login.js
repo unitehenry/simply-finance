@@ -73,7 +73,7 @@ class Login extends Component {
             />
           </div>
           {this.state.login ?
-            (<Button variant="contained" color='primary' style={styles.button} onClick={()=> {console.log({email: this.state.email, password: this.state.password})}}
+            (<Button variant="contained" style={styles.button1} onClick={()=> {console.log({email: this.state.email, password: this.state.password})}}
           >Login</Button>)
           :
           null
@@ -84,15 +84,15 @@ class Login extends Component {
             <div>
               <br/>
               <p> Don't have an account?</p>
-              <Button variant="contained" style={styles.button} onClick={()=> {this.setState({signup: true,login: false,nameTextField: false,header: false})}}
+              <Button variant="contained" style={styles.button2} onClick={()=> {this.setState({signup: true,login: false,nameTextField: false,header: false})}}
               >Sign Up!</Button>
             </div>)
             :
             (
             <div>
-              <Button variant="contained" color='primary' style={styles.button} onClick={()=> {console.log({name: this.state.name, email: this.state.email, password: this.state.password})}}
+              <Button variant="contained" style={styles.button1} onClick={()=> {console.log({name: this.state.name, email: this.state.email, password: this.state.password})}}
               >Create</Button>
-              <Button variant="contained" style={styles.button} onClick={()=> {this.setState({signup: false,login: true,nameTextField: true,header: true})}}
+              <Button variant="contained" style={styles.button2} onClick={()=> {this.setState({signup: false,login: true,nameTextField: true,header: true})}}
               >Go Back</Button>
             </div>)
           }
@@ -115,7 +115,11 @@ const styles = {
   input: {
     width: '50%'
   },
-  button: {
+  button1: {
+    margin: '1em',
+    backgroundColor: '#1fcd81'
+  },
+  button2: {
     margin: '1em'
   },
   card: {
