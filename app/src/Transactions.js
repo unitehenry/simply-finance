@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Typography, Card, CardContent, Button } from '@material-ui/core';
+import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 class Transations extends Component {
 
@@ -32,15 +33,27 @@ class Transations extends Component {
 
 function Transaction(){
   return(
-    <Button style={{width: '100%'}}>
-      <Card style={{width: '100%'}}>
-        <CardContent>
-          <Typography variant="h6" color="inherit">
-              { "Vendor Name - $35.26" }
-          </Typography>
-        </CardContent>
-      </Card>
-    </Button>
+    <ExpansionPanel>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Receipt Type - {"$35.21"}</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <div style={styles.details}>
+            <img src={'https://i.imgur.com/ixTOWYZ.jpg'} style={styles.image} />
+            <List style={{width: '100%'}}>
+              <ListItem>
+                <ListItemText>
+                  Hello
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {"$200"}
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider/>
+            </List>
+          </div>
+        </ExpansionPanelDetails>
+    </ExpansionPanel>
   )
 }
 
@@ -48,6 +61,14 @@ const styles = {
   header: {
     textAlign: 'center',
     margin: '.3em'
+  },
+  image: {
+    width: '50%'
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }
 

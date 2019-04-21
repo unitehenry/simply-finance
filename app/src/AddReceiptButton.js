@@ -14,7 +14,7 @@ class AddReceiptButton extends Component {
   }
 
   fileChange = () => {
-    console.log(this.state.selector.files[0].name)
+    console.log(this.state.selector.files[0])
     //Get mock data from OCR
   }
 
