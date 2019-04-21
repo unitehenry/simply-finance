@@ -7,6 +7,8 @@ var request = require('request');
 
 const tesseract = require('node-tesseract-ocr');
 var imgur = require('imgur');
+	// Imports the Google Cloud client library
+const language = require('@google-cloud/language');
 
 // http://localhost:8080/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png
 
@@ -18,14 +20,72 @@ app.use(bodyParser.json());
 
 
 
-// app.get('/classifyData', function (req, res) {
-// 	var jsObj = JSON.parse(req.query.json);
+function classify(str) {
+	for (var i=0; i<15; i++) {
+		str += " " + str;
+	}
+	// return "Food";
 
-// 	for (obj in jsObj) {
-// 		console.log(obj);
-// 	}
+	// Creates a client
+	const client = new language.LanguageServiceClient();
 
-// });
+	/**
+	 * TODO(developer): Uncomment the following line to run this code.
+	 */
+	// const text = 'Your text to analyze, e.g. Hello, world!';
+
+	// Prepares a document, representing the provided text
+	const document = {
+	  content: str,
+	  type: 'PLAIN_TEXT',
+	};
+
+	// Classifies text in the document
+	client
+	  .classifyText({document: document})
+	  .then(results => {
+	    const classification = results[0];
+
+	    console.log('Categories:');
+	    classification.categories.forEach(category => {
+	      console.log(
+	        `Name: ${category.name}, Confidence: ${category.confidence}`
+	      );
+	    });
+	  })
+	  .catch(err => {
+	    console.error('ERROR:', err);
+	  });
+}
+
+
+app.get('/classifyData', function (req, res) {
+	// classify("Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple ");
+	var inpString = req.query.json;
+	var jsObj = JSON.parse(inpString);
+
+	var resJSON = [];
+
+
+
+	for (obj in jsObj) {
+		// console.log(jsObj[obj].Name + " - " + jsObj[obj].Price);
+		// var classifiedItem = classify(jsObj[obj].Name);
+		var test = jsObj[obj].Name;
+		console.log(test);
+		// for (var i=0; i<25; i++) {
+		// 	test = test + " " + test;
+		// }
+		console.log(test);
+		classify(test);
+		// var temp = {"Name" : jsObj[obj].Name, "Price" : jsObj[obj].Price, "Category" : classifiedItem};
+		var temp = {"Name" : jsObj[obj].Name, "Price" : jsObj[obj].Price};
+		resJSON.push(temp);
+	}
+	console.log(resJSON);
+	res.send(resJSON);
+
+});
 
 
 
