@@ -60,7 +60,7 @@ function Transaction(props, i){
                     <React.Fragment key={i}>
                       <ListItem>
                         <ListItemText>
-                          {item.name}
+                          {item.name} - {item.category}
                         </ListItemText>
                         <ListItemSecondaryAction>
                           {item.price}
