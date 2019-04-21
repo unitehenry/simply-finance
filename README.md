@@ -7,7 +7,7 @@
 ## Inspiration
 As our world shifts to mobile payments, it's becoming harder and harder to budget our finances and differentiate between luxuries and necessities.
 
-## What It Does
+## What it does
 A simple financial wellness application that allows you to scan receipts and track
 transactions in a minimal list to visualize spending and create
 budgets.
@@ -18,7 +18,7 @@ budgets.
 * Google Cloud Vision OCR for conversion of image text into machine-encoded text
 * Google Cloud NLP Content Classifier for classification of receipt items into a taxonomy of unique shopping categories
 
-## Challenges we faced
+## Challenges we ran into
 * Transfer of variables through javascript
 * Implementation of the OCR to register the correct information
 * Content categorization
