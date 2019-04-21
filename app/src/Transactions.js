@@ -78,10 +78,10 @@ function Transaction(props, i, uid){
                     <React.Fragment key={i}>
                       <ListItem>
                         <ListItemText>
-                          {item.name} - {item.category}
+                          {item.Name} - {item.Category}
                         </ListItemText>
                         <ListItemSecondaryAction>
-                          {item.price}
+                          {item.Price}
                         </ListItemSecondaryAction>
                       </ListItem>
                       <Divider/>
