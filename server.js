@@ -111,5 +111,5 @@ app.get('/transcribeReceipt', function(req, res) {
 
 /* Listen on port 8080 */
 app.listen(8080, function(){
-	console.log('Server started...');
+	console.log('Server started at 8080...');
 });
