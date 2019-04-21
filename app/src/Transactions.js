@@ -1,29 +1,39 @@
 import React, { Component } from 'react';
-import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Button, Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import config from './environment';
+
+//Firebase Configuration
+const firebase = require('firebase/app');
+require('firebase/firestore');
+firebase.initializeApp(config.firebase);
+const db = firebase.firestore();
+
 class Transations extends Component {
+
+  state = {
+    transactions: []
+  }
+
+  componentDidMount = () => {
+
+    const component = this;
+
+    db.collection("users").doc(component.props.uid)
+      .onSnapshot((doc) => {
+        const transactions = doc.data().transactions;
+        component.setState({transactions: transactions});
+      });
+  }
 
   render(){
     return (
       <div style={{padding: '1.5em'}}>
-
-        <div>
-          <Typography variant="h4" color="inherit" style={styles.header}>
-              Total Spent
-          </Typography>
-          <Typography variant="h3" color="inherit" style={styles.header}>
-              { "$35.26" }
-          </Typography>
-        </div>
-
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
+        <Typography variant="h3" style={{textAlign: 'center', padding: '1em'}}>
+          Transactions
+        </Typography>
+        { this.state.transactions ? this.state.transactions.map((transaction, i) => Transaction(transaction, i, this.props.uid)) : null }
 
       </div>
     )
@@ -31,26 +41,56 @@ class Transations extends Component {
 
 }
 
-function Transaction(){
+function Transaction(props, i, uid){
+
+  function removeItem(i){
+    db.collection("users").doc(uid)
+      .get()
+      .then((doc) => {
+        let currentTransactions = doc.data().transactions;
+        currentTransactions.splice(i, 1);
+        db.collection("users").doc(uid).set({
+          transactions: currentTransactions
+        })
+        .then(function() {
+            console.log("Transaction Removed!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      })
+  }
+
   return(
-    <ExpansionPanel>
+    <ExpansionPanel key={i}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Receipt Type - {"$35.21"}</Typography>
+          <Typography>
+            { `Transaction #${i+1}` }
+          </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div style={styles.details}>
-            <img src={'https://i.imgur.com/ixTOWYZ.jpg'} style={styles.image} />
+            <img src={props.img} style={styles.image} alt="receipt"/>
             <List style={{width: '100%'}}>
-              <ListItem>
-                <ListItemText>
-                  Hello
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {"$200"}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider/>
+              {
+                props.items.map((item, i) => {
+                  return (
+                    <React.Fragment key={i}>
+                      <ListItem>
+                        <ListItemText>
+                          {item.name} - {item.category}
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          {item.price}
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider/>
+                    </React.Fragment>
+                  )
+                })
+              }
             </List>
+            <Button style={{margin: '2px'}} onClick={() => removeItem(i)}>Remove Transaction</Button>
           </div>
         </ExpansionPanelDetails>
     </ExpansionPanel>
@@ -68,7 +108,8 @@ const styles = {
   details: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   }
 }
 
