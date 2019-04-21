@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Button, Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import config from './environment';
@@ -20,10 +20,10 @@ class Transations extends Component {
 
     const component = this;
 
-    db.collection("users").doc(this.props.uid)
+    db.collection("users").doc(component.props.uid)
       .onSnapshot((doc) => {
         const transactions = doc.data().transactions;
-      component.setState({transactions: transactions});
+        component.setState({transactions: transactions});
       });
   }
 
@@ -33,7 +33,7 @@ class Transations extends Component {
         <Typography variant="h3" style={{textAlign: 'center', padding: '1em'}}>
           Transactions
         </Typography>
-        { this.state.transactions.map((transaction, i) => Transaction(transaction, i)) }
+        { this.state.transactions ? this.state.transactions.map((transaction, i) => Transaction(transaction, i, this.props.uid)) : null }
 
       </div>
     )
@@ -41,7 +41,25 @@ class Transations extends Component {
 
 }
 
-function Transaction(props, i){
+function Transaction(props, i, uid){
+
+  function removeItem(i){
+    db.collection("users").doc(uid)
+      .get()
+      .then((doc) => {
+        let currentTransactions = doc.data().transactions;
+        currentTransactions.splice(i, 1);
+        db.collection("users").doc(uid).set({
+          transactions: currentTransactions
+        })
+        .then(function() {
+            console.log("Transaction Removed!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      })
+  }
 
   return(
     <ExpansionPanel key={i}>
@@ -72,6 +90,7 @@ function Transaction(props, i){
                 })
               }
             </List>
+            <Button style={{margin: '2px'}} onClick={() => removeItem(i)}>Remove Transaction</Button>
           </div>
         </ExpansionPanelDetails>
     </ExpansionPanel>

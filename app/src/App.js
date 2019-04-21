@@ -40,7 +40,7 @@ class App extends Component {
           (
             <React.Fragment>
               <Transactions uid={this.state.uid}/>
-              <AddReceiptButton />
+              <AddReceiptButton uid={this.state.uid}/>
             </React.Fragment>
           ):
           <Login setUid={(id) => this.setUid(id)}/>

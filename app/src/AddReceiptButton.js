@@ -4,11 +4,17 @@ import AddIcon from '@material-ui/icons/Add';
 
 import * as $ from 'jquery';
 
+//Firebase Configuration
+const firebase = require('firebase/app');
+require('firebase/firestore');
+const db = firebase.firestore();
+
 class AddReceiptButton extends Component {
 
   state = {
     selector: null,
-    detailsOpen: false
+    detailsOpen: false,
+    receiptUrl: ''
   }
 
   componentDidMount = () => {
@@ -48,7 +54,9 @@ class AddReceiptButton extends Component {
             },
            success: function(data) {
              console.log(data.data.link);
+             component.setState({receiptUrl: data.data.link})
              component.setState({detailsOpen: true});
+             //API call to server for parsing goes here
            }
           });
         }
@@ -63,8 +71,38 @@ class AddReceiptButton extends Component {
   }
 
   closeDialog = () => {
+
+    let currentTransactions = [];
+    db.collection("users").doc(this.props.uid)
+      .get()
+      .then((doc) => {
+        currentTransactions = doc.data().transactions;
+        let newTransaction =  {
+            img: this.state.receiptUrl,
+            items: [
+              {
+                name: 'Red Bull',
+                price: 2.25,
+                category: 'Beverage'
+              }
+            ]
+          }
+        currentTransactions.push(newTransaction);
+        db.collection("users").doc(this.props.uid).set({
+          transactions: currentTransactions
+        })
+        .then(function() {
+            console.log("New Transaction Added!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      })
+
+    //API call to server for confirmation goes here (send edits)
+      //Push to firebase here
+
     this.setState({detailsOpen: false})
-    // TODO: construct data and push to firesstore
   }
 
   render(){
