@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import NavBar from './NavBar';
 import Transactions from './Transactions';
+import Budget from './Budget';
 import AddReceiptButton from './AddReceiptButton';
 import Login from './Login';
 
@@ -37,7 +38,7 @@ class App extends Component {
           this.state.uid !== '' ?
           (
             <React.Fragment>
-              <Transactions uid={this.state.uid}/>
+              <Budget uid={this.state.uid}/>
               <AddReceiptButton uid={this.state.uid}/>
             </React.Fragment>
           ):

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/unitehenry/simply-finance#readme",
   "dependencies": {
     "@google-cloud/language": "^2.1.0",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "imgur": "^0.3.1",
     "ng-ocr": "^1.6.1",

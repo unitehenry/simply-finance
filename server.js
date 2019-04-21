@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var fs = require('fs');
 var request = require('request');
+const cors = require('cors');
 
 const PORT = 8080 || process.env.PORT;
 // app.set('port', (process.env.PORT || 8080))
@@ -20,6 +21,7 @@ const language = require('@google-cloud/language');
 app.use(express.static("."));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+app.use(cors());
 
 
 

@@ -28,7 +28,10 @@ class Budget extends Component {
         if (doc.exists) {
             const data = doc.data();
             component.setState({transactions: data.transactions})
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data().transactions);
+            // console.log(calcPercent(JSON.stringify(doc.data().transactions)))
+            const resultPercent = calcPercent(JSON.stringify(doc.data().transactions));
+            console.log("Final " + JSON.stringify(resultPercent));
             component.calculateBudget();
         } else {
             console.log("No such document!");
@@ -36,6 +39,9 @@ class Budget extends Component {
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
+
+    // console.log(this.state.transactions)
+    //console.log(calcPercent(JSON.stringify(this.state.transactions[1].items)))
   }
 
   calculateBudget = () => {
@@ -51,7 +57,7 @@ class Budget extends Component {
       })
     })
 
-    console.log(this.state.categories);
+    // console.log(this.state.categories);
   }
 
   render() {
@@ -106,5 +112,58 @@ const styles = {
     margin: '1em'
   }
 }
+
+function calcPercent(oldJSON){
+      var dict = {}
+      var someObj = [];
+      var js = JSON.parse(oldJSON);
+      for (var item in js) {
+        for (var elm in js[item].items) {
+          // console.log(js[item].items[elm]);
+          someObj.push(js[item].items[elm]);
+        }
+        // console.log(item);
+        // console.log(js[item]);
+      }
+
+      console.log("SOME " + JSON.stringify(someObj));
+
+
+      for (var i = 0; i < someObj.length;i++){
+        if (someObj[i].Category != "") {
+          if (someObj[i].Category in dict ){
+              if (isNaN(someObj[i].Price)) {
+                dict[someObj[i].Category] += 0;
+              } else {
+                dict[someObj[i].Category] += parseInt(someObj[i].Price, 10);
+              }
+          }else {
+              if (isNaN(someObj[i].Price)) {
+                dict[someObj[i].Category] = 0;
+              } else {
+                dict[someObj[i].Category] = parseInt(someObj[i].Price, 10);
+              }
+          }
+        }
+      }
+      var count = 0
+      var percent = {}
+      for (var key in dict){
+        if (key != "") {
+          if (isNaN(dict[key])) {
+                  count += 0
+          } else {
+              count += parseInt(dict[key], 10);
+          }
+        }
+      }
+      for (var key in dict){
+          percent[key] = parseInt(dict[key]/count*100);
+      }
+
+      console.log("PERENT " + JSON.stringify(percent));
+      return percent;
+
+  }
 
 export default Budget;
