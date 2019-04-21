@@ -25,8 +25,6 @@ class App extends Component {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         component.setState({uid: user.uid})
-      } else {
-        this.props.setUid('');
       }
     });
   }
