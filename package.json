@@ -4,7 +4,8 @@
   "description": "Simplify your finances",
   "main": "index.js",
   "scripts": {
-    "test": "npm run"
+    "test": "npm run",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
