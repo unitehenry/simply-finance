@@ -2,10 +2,9 @@
   "name": "simplifi",
   "version": "1.0.0",
   "description": "Simplify your finances",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "npm run",
-    "start": "node server"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +17,13 @@
   },
   "homepage": "https://github.com/unitehenry/simply-finance#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "@google-cloud/language": "^2.1.0",
     "express": "^4.16.4",
+    "imgur": "^0.3.1",
+    "ng-ocr": "^1.6.1",
     "node-tesseract-ocr": "^0.1.0",
-    "request": "^2.88.0"
+    "ocr-by-image-url": "0.0.1",
+    "pkg-config": "^1.1.1",
+    "sap-leonardo": "^0.5.9"
   }
 }
