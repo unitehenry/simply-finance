@@ -20,14 +20,32 @@ const styles = theme => ({
 });
 
 class Progress extends React.Component {
-  state = {
-    food: 50,
-    merch: 5,
-    entertainment: 35,
-    other: 10,
-  };
+    var someObj = JSON.stringify([{"Name": "Banana", "Price": "1.00", "Category": "Food"},{"Name": "TV","Price": "100.00", "Category": "Entertaiment"},{"Name" : "Apple","Price" : "2.00", "Category": "Food"}]);
+    state = calcPercent(someObj);
+    
 
 
+  function calcPercent(someObj){
+      var dict = {}
+      for (var i = 0; i < someObj.length;i++){
+          
+          if (someObj[i].Category in dict ){
+            dict[someObj[i].Category] += someObj[i].Price;
+          }else {
+            dict[someObj[i].Category] = someObj[i].Price;
+          }
+      }
+      var count = 0
+      var percent = {}
+      for (var key in dict){
+        count += dict[key];
+      }
+      for (var key in dict){
+          percent[key] = dict[key]/count;
+      }
+      return percent;
+      
+  }
   componentWillUnmount() {
     clearInterval(this.timer);
   }
@@ -42,30 +60,15 @@ class Progress extends React.Component {
       <div className={classes.roots}>
         <Paper className={classes.root} elevation={5}>
         <Typography variant="h5" component="h3">
-            <p>Food</p>
-            <LinearProgress variant="determinate" value={this.state.food} />
-            <LinearProgress variant="determinate" value={this.state.food} />
-            <LinearProgress variant="determinate" value={this.state.food} />
-            <LinearProgress variant="determinate" value={this.state.food} />
+        for(var key in state){
+        
+            <p>key</p>
+            <LinearProgress variant="determinate" value={this.state[key]} />
+            <LinearProgress variant="determinate" value={this.state[key]} />
+            <LinearProgress variant="determinate" value={this.state[key]} />
+            <LinearProgress variant="determinate" value={this.state[key]} />
             <br />
-            <p>Merch</p>
-            <LinearProgress color="secondary" variant="determinate" value={this.state.merch} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.merch} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.merch} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.merch} />
-            <br />
-            <p>Entertainment</p>
-            <LinearProgress variant="determinate" value={this.state.entertainment} />
-            <LinearProgress variant="determinate" value={this.state.entertainment} />
-            <LinearProgress variant="determinate" value={this.state.entertainment} />
-            <LinearProgress variant="determinate" value={this.state.entertainment} />
-            <br />
-            <p>Other</p>
-            <LinearProgress color="secondary" variant="determinate" value={this.state.other} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.other} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.other} />
-            <LinearProgress color="secondary" variant="determinate" value={this.state.other} />
-            <br />
+        }
         </Typography>
       </Paper>  
       </div>
