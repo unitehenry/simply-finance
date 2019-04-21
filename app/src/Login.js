@@ -123,7 +123,7 @@ const styles = {
     margin: '1em'
   },
   card: {
-    margin: '15em 2em 2em '
+    margin: '7em 2em 2em '
   }
 }
 
