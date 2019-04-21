@@ -5,8 +5,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-
-
 class Progress extends React.Component {
 
   render() {
@@ -14,25 +12,19 @@ class Progress extends React.Component {
     return (
       <div className={classes.roots}>
         <Paper className={classes.paper} elevation={5}>
-          <label style={styles.labelTag}>Category</label>
-          <Typography variant="h5" component="h3" style={{margin: '1em'}}>
-            <LinearProgress variant="determinate" value={50}/>
-          </Typography>
-          <br />
-          <label style={styles.labelTag}>Category</label>
-          <Typography variant="h5" component="h3" style={{margin: '1em'}}>
-            <LinearProgress variant="determinate" value={50}/>
-          </Typography>
-          <br />
-          <label style={styles.labelTag}>Category</label>
-          <Typography variant="h5" component="h3" style={{margin: '1em'}}>
-            <LinearProgress variant="determinate" value={50}/>
-          </Typography>
-          <br />
-          <label style={styles.labelTag}>Category</label>
-          <Typography variant="h5" component="h3" style={{margin: '1em'}}>
-            <LinearProgress variant="determinate" value={50}/>
-          </Typography>
+          {
+            this.props.categories.map((category) => {
+              return (
+                <React.Fragment>
+                  <label style={styles.labelTag}>{category === "" ? 'Other' : category}</label>
+                  <Typography variant="h5" component="h3" style={{margin: '1em'}}>
+                    <LinearProgress variant="determinate" value={98.99}/>
+                  </Typography>
+                  <br />
+                </React.Fragment>
+              )
+            })
+          }
         </Paper>
       </div>
     );
