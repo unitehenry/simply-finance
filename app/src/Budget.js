@@ -10,11 +10,12 @@ class Budget extends Component {
         //this.salary=item
     //}
     state = {
-    salary: 0,
+    //salary: 0,
     header: true,
     nameTextField: true,
     graphs: true,
-    questions: false
+    questions: false,
+    data: []
     }
   render() {
     return (
@@ -24,7 +25,7 @@ class Budget extends Component {
             (
             
             <div style = {styles.header}>
-              <Progress  /**salary=this.state.now**//>
+              <Progress />
               <Button variant="contained" style={styles.button2} onClick={()=> {this.setState({graphs: true,questions: true,nameTextField: false,header: false})}}
               >Create!</Button>
               <Button disabled style = {styles.inBut}>
