@@ -35,11 +35,11 @@ function Transaction(){
   return(
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Receipt Type - {"$35.21"}</Typography>
+          <Typography>Majority of Receipt Types - {"$35.21"}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div style={styles.details}>
-            <img src={'https://i.imgur.com/ixTOWYZ.jpg'} style={styles.image} />
+            <img src={'https://i.imgur.com/ixTOWYZ.jpg'} style={styles.image} alt="receipt"/>
             <List style={{width: '100%'}}>
               <ListItem>
                 <ListItemText>
