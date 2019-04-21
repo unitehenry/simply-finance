@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Fab, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
+const HOST = 'http://10.250.68.25:8080';
+
 import * as $ from 'jquery';
 
 //Firebase Configuration
@@ -57,7 +59,7 @@ class AddReceiptButton extends Component {
              component.setState({receiptUrl: data.data.link})
 
              $.ajax({
-               url: `http://localhost:8080/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png`,
+               url: `${HOST}/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png`,
                type: 'GET',
                success: function(data){
                  console.log(data);
@@ -82,7 +84,7 @@ class AddReceiptButton extends Component {
 
     //API call to server for confirmation goes here (send edits)
     $.ajax({
-      url: 'http://localhost:8080/classifyData',
+      url: `${HOST}/classifyData`,
       type: 'GET',
       contentType: 'applcation/json',
       crossDomain: true,
