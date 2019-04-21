@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Fab, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-const HOST = 'http://10.250.68.25:8080';
-
 import * as $ from 'jquery';
+
+const HOST = 'http://10.250.68.25:8080';
 
 //Firebase Configuration
 const firebase = require('firebase/app');
@@ -21,6 +21,7 @@ class AddReceiptButton extends Component {
   }
 
   componentDidMount = () => {
+
     this.setState({selector: document.getElementById('file')});
     const component = this;
 
@@ -59,11 +60,16 @@ class AddReceiptButton extends Component {
              component.setState({receiptUrl: data.data.link})
 
              $.ajax({
-               url: `${HOST}/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png`,
+               url: `${HOST}/transcribeReceipt?image=${data.data.link}`,
                type: 'GET',
+               crossDomain: true,
+               dataType: 'text',
                success: function(data){
-                 console.log(data);
-                 component.setState({reviewItems: data, detailsOpen: true});
+                 const items = JSON.parse(data);
+                 component.setState({reviewItems: items, detailsOpen: true});
+               },
+               error: function(err){
+                 if(err){console.log(err)}
                }
              })
            }
@@ -80,50 +86,46 @@ class AddReceiptButton extends Component {
   }
 
   closeDialog = () => {
-    let returnedItems = []; //CALLBACK FROM API
+    const component = this;
 
-    //API call to server for confirmation goes here (send edits)
+    var params = JSON.stringify(this.state.reviewItems);
+    var returnItems = []; //CALLBACK FROM API
+
     $.ajax({
       url: `${HOST}/classifyData`,
       type: 'GET',
       contentType: 'applcation/json',
       crossDomain: true,
-      data: this.state.reviewItems,
-      dataType: 'json',
+      data: {
+        json : params
+      },
+      dataType: 'text',
       success: function(data){
-        returnedItems = data;
-      }
-    })
+        returnItems = JSON.parse(data);
 
-    //Pushing to Firebase
-    let currentTransactions = [];
-    db.collection("users").doc(this.props.uid)
-      .get()
-      .then((doc) => {
-        currentTransactions = doc.data().transactions;
+        //Pushing to Firebase
         let newTransaction =  {
-            img: this.state.receiptUrl,
-            items: returnedItems
+            img: component.state.receiptUrl,
+            items: returnItems
           }
 
-        currentTransactions.push(newTransaction);
-        db.collection("users").doc(this.props.uid).set({
-          transactions: currentTransactions
-        })
-        .then(function() {
-            console.log("New Transaction Added!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-      })
+        db.collection("users").doc(component.props.uid)
+          .get()
+          .then((doc) => {
+            const transactions = doc.data().transactions;
+            transactions.push(newTransaction);
+            db.collection("users").doc(component.props.uid).set({transactions: transactions});
+          })
 
-    this.setState({detailsOpen: false})
+
+        component.setState({detailsOpen: false})
+      }
+    })
   }
 
   handleChange = (e) => {
     const items = this.state.reviewItems;
-    items[e.target.name.i][e.target.name.type] = e.target.value;
+    items[e.target.index][e.target.name] = e.target.value;
     this.setState({reviewItems: items});
   }
 
@@ -155,15 +157,17 @@ function ImageConfirm(props){
               return (
                 <div style={styles.itemField} key={i}>
                   <TextField
-                    name={{type: 'name', index: i}}
-                    value={item.name}
+                    name={'Name'}
+                    index={i}
+                    value={item.Name}
                     type="text"
                     style={{width: '100%'}}
                   />
                   <TextField
-                    name={{type: 'price', index: i}}
-                    value={item.price}
-                    type="number"
+                    name={'Price'}
+                    value={'      ' + item.Price}
+                    index={i}
+                    type="text"
                     style={{width: '100%'}}
                   />
                 </div>
