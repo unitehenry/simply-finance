@@ -6,7 +6,7 @@
 ```touch src/environment.js```
 
 #### Import Firebase Credentials
-```
+```js
 const config = {
   firebase: {
     apiKey: "<api-key>",
