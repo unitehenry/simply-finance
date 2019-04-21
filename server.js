@@ -20,34 +20,24 @@ app.use(bodyParser.json());
 
 
 
-function classify(str) {
-	for (var i=0; i<15; i++) {
-		str += " " + str;
-	}
-	// return "Food";
-
-	// Creates a client
+async function classify(str) {
 	const client = new language.LanguageServiceClient();
-
-	/**
-	 * TODO(developer): Uncomment the following line to run this code.
-	 */
-	// const text = 'Your text to analyze, e.g. Hello, world!';
-
-	// Prepares a document, representing the provided text
 	const document = {
 	  content: str,
 	  type: 'PLAIN_TEXT',
 	};
 
+
+	return new Promise((resolve, reject) =>{
+
+
 	// Classifies text in the document
-	client
-	  .classifyText({document: document})
-	  .then(results => {
+	var thePromise = client.classifyText({document: document}).then(results => {
 	    const classification = results[0];
 
 	    console.log('Categories:');
 	    classification.categories.forEach(category => {
+	    	resolve(category.name.substring(1, category.name.substring(2).indexOf('/')+2));
 	      console.log(
 	        `Name: ${category.name}, Confidence: ${category.confidence}`
 	      );
@@ -56,34 +46,45 @@ function classify(str) {
 	  .catch(err => {
 	    console.error('ERROR:', err);
 	  });
+	});
+}
+
+async function addCategory(jsObj) {
+	var resJSON = [];
+
+	return new Promise((resolve, reject) =>{
+
+
+		for (obj in jsObj) {
+			var test = jsObj[obj].Name;
+			console.log(test);
+			for (var i=0; i<5; i++) {
+				test = test + " " + test;
+			}
+			console.log(test);
+			const category = classify(test);
+			console.log(category);
+			var temp = {"Name" : jsObj[obj].Name, "Price" : jsObj[obj].Price, "Category" : category};
+			// console.log(temp);
+			resJSON.push(temp);
+		}
+		resolve(resJSON);
+
+	});
+
 }
 
 
-app.get('/classifyData', function (req, res) {
+app.get('/classifyData', async function (req, res) {
 	// classify("Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple Apple ");
 	var inpString = req.query.json;
 	var jsObj = JSON.parse(inpString);
 
-	var resJSON = [];
 
+	var results = [];
+	results = await addCategory(jsObj);
+	console.log(results);
 
-
-	for (obj in jsObj) {
-		// console.log(jsObj[obj].Name + " - " + jsObj[obj].Price);
-		// var classifiedItem = classify(jsObj[obj].Name);
-		var test = jsObj[obj].Name;
-		console.log(test);
-		// for (var i=0; i<25; i++) {
-		// 	test = test + " " + test;
-		// }
-		console.log(test);
-		classify(test);
-		// var temp = {"Name" : jsObj[obj].Name, "Price" : jsObj[obj].Price, "Category" : classifiedItem};
-		var temp = {"Name" : jsObj[obj].Name, "Price" : jsObj[obj].Price};
-		resJSON.push(temp);
-	}
-	console.log(resJSON);
-	res.send(resJSON);
 
 });
 
