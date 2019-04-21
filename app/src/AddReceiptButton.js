@@ -45,6 +45,7 @@ const styles = {
     bottom: 20,
     left: 'auto',
     position: 'fixed',
+    backgroundColor: '#1fcd81'
   }
 }
 
