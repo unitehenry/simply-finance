@@ -20,12 +20,11 @@ class Transations extends Component {
 
     const component = this;
 
-    db.collection("transactions").doc("OENR7di8Vkv4cHZoTvIw")
-      .onSnapshot(function(doc) {
-          const transactions = doc.data().transactions;
-          component.setState({transactions: transactions});
+    db.collection("users").doc(this.props.uid)
+      .onSnapshot((doc) => {
+        const transactions = doc.data().transactions;
+      component.setState({transactions: transactions});
       });
-
   }
 
   render(){

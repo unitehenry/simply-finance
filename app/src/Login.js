@@ -18,7 +18,6 @@ class Login extends Component {
     }
   }
 
-
   handleChange = (event) => {
     let userInfo = this.state.userInfo;
     userInfo[event.target.name] = event.target.value;
@@ -136,7 +135,7 @@ const styles = {
     textAlign: 'center'
   },
   input: {
-    width: '50%'
+    width: '90%'
   },
   button1: {
     margin: '1em',

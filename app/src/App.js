@@ -5,6 +5,10 @@ import Transactions from './Transactions';
 import AddReceiptButton from './AddReceiptButton';
 import Login from './Login';
 
+//Firebase Configuration
+const firebase = require('firebase/app');
+require('firebase/auth');
+
 class App extends Component {
 
   state = {
@@ -15,17 +19,34 @@ class App extends Component {
     this.setState({uid: id})
   }
 
+  componentDidMount = () => {
+    const component = this;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        component.setState({uid: user.uid})
+      } else {
+        this.props.setUid('');
+      }
+    });
+  }
+
   render() {
     return (
       <div>
-        <NavBar auth={true}/>
+        <NavBar auth={this.state.uid === '' ? true : false} setUid={(id) => this.setUid(id)}/>
         {
-          this.state.uid ?
-          <Transactions />:
+          this.state.uid !== '' ?
+          (
+            <React.Fragment>
+              <Transactions uid={this.state.uid}/>
+              <AddReceiptButton />
+            </React.Fragment>
+          ):
           <Login setUid={(id) => this.setUid(id)}/>
         }
 
-        <AddReceiptButton />
+
       </div>
     )
   }
