@@ -4,7 +4,6 @@
   "description": "Simplify your finances",
   "main": "index.js",
   "scripts": {
-    "test": "npm run",
     "start": "node server.js"
   },
   "repository": {
