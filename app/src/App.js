@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
-import Information from './Information';
+
+import NavBar from './NavBar';
+import Transactions from './Transactions';
+import AddReceiptButton from './AddReceiptButton';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <h1 style={styles.header}>SimpliFi</h1>
       <div>
-        <h1 style={styles.header}>SimpliFi</h1>
-        <Information />
+        <NavBar auth={true}/>
+        <Transactions />
+        <AddReceiptButton />
       </div>
-    );
-  }
-}
-
-const styles = {
-  header: {
-    textAlign: 'center',
-    margin: '1em'
-  },
-  info: {
-    textAlign: 'center'
+    )
   }
 }
 

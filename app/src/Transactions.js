@@ -1,29 +1,39 @@
 import React, { Component } from 'react';
 import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, Divider, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import config from './environment';
+
+//Firebase Configuration
+const firebase = require('firebase/app');
+require('firebase/firestore');
+firebase.initializeApp(config.firebase);
+const db = firebase.firestore();
 
 class Transations extends Component {
+
+  state = {
+    transactions: []
+  }
+
+  componentDidMount = () => {
+
+    const component = this;
+
+    db.collection("transactions").doc("OENR7di8Vkv4cHZoTvIw")
+      .onSnapshot(function(doc) {
+          const transactions = doc.data().transactions;
+          component.setState({transactions: transactions});
+      });
+
+  }
 
   render(){
     return (
       <div style={{padding: '1.5em'}}>
-
-        <div>
-          <Typography variant="h4" color="inherit" style={styles.header}>
-              Total Spent
-          </Typography>
-          <Typography variant="h3" color="inherit" style={styles.header}>
-              { "$35.26" }
-          </Typography>
-        </div>
-
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
-        {Transaction()}
+        <Typography variant="h3" style={{textAlign: 'center', padding: '1em'}}>
+          Transactions
+        </Typography>
+        { this.state.transactions.map((transaction, i) => Transaction(transaction, i)) }
 
       </div>
     )
@@ -31,25 +41,36 @@ class Transations extends Component {
 
 }
 
-function Transaction(){
+function Transaction(props, i){
+
   return(
-    <ExpansionPanel>
+    <ExpansionPanel key={i}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Majority of Receipt Types - {"$35.21"}</Typography>
+          <Typography>
+            { `Transaction #${i+1}` }
+          </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div style={styles.details}>
-            <img src={'https://i.imgur.com/ixTOWYZ.jpg'} style={styles.image} alt="receipt"/>
+            <img src={props.img} style={styles.image} alt="receipt"/>
             <List style={{width: '100%'}}>
-              <ListItem>
-                <ListItemText>
-                  Hello
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {"$200"}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider/>
+              {
+                props.items.map((item, i) => {
+                  return (
+                    <React.Fragment key={i}>
+                      <ListItem>
+                        <ListItemText>
+                          {item.name}
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          {item.price}
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider/>
+                    </React.Fragment>
+                  )
+                })
+              }
             </List>
           </div>
         </ExpansionPanelDetails>
@@ -68,7 +89,8 @@ const styles = {
   details: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   }
 }
 

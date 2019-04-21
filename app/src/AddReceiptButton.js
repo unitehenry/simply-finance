@@ -64,6 +64,7 @@ class AddReceiptButton extends Component {
 
   closeDialog = () => {
     this.setState({detailsOpen: false})
+    // TODO: construct data and push to firesstore
   }
 
   render(){
