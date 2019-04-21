@@ -22,6 +22,7 @@ function NavBar(props){
           !props.auth ?
           (
             <React.Fragment>
+                <Button style={styles.button} onClick={() => props.activateBudget()}>budget</Button>
                 <Button style={styles.button} onClick={() => signOut()}>sign out</Button>
             </React.Fragment>
           ) :

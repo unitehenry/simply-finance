@@ -13,11 +13,16 @@ require('firebase/auth');
 class App extends Component {
 
   state = {
-    uid: ''
+    uid: '',
+    budget: false
   }
 
   setUid = (id) => {
     this.setState({uid: id})
+  }
+
+  activateBudget = () => {
+    this.setState({budget: true})
   }
 
   componentDidMount = () => {
@@ -31,23 +36,27 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <NavBar auth={this.state.uid === '' ? true : false} setUid={(id) => this.setUid(id)}/>
-        {
-          this.state.uid !== '' ?
-          (
-            <React.Fragment>
-              <Budget uid={this.state.uid}/>
-              <AddReceiptButton uid={this.state.uid}/>
-            </React.Fragment>
-          ):
-          <Login setUid={(id) => this.setUid(id)}/>
-        }
+    if(this.state.budget){
+      return <Budget uid={this.state.uid} />
+    } else {
+      return (
+        <div>
+          <NavBar auth={this.state.uid === '' ? true : false} setUid={(id) => this.setUid(id)} activateBudget={() => this.activateBudget()}/>
+          {
+            this.state.uid !== '' ?
+            (
+              <React.Fragment>
+                <Transactions uid={this.state.uid}/>
+                <AddReceiptButton uid={this.state.uid}/>
+              </React.Fragment>
+            ):
+            <Login setUid={(id) => this.setUid(id)}/>
+          }
 
 
-      </div>
-    )
+        </div>
+      )
+    }
   }
 }
 
