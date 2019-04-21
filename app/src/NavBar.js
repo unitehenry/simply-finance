@@ -22,7 +22,7 @@ function NavBar(props){
           !props.auth ?
           (
             <React.Fragment>
-              <Button style={styles.button} onClick={() => signOut()}>sign out</Button>
+                <Button style={styles.button} onClick={() => signOut()}>sign out</Button>
             </React.Fragment>
           ) :
           <img src={Logo} style={styles.image} alt="logo"/>
