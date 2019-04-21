@@ -8,26 +8,17 @@ import Typography from '@material-ui/core/Typography';
 class Progress extends React.Component {
 
   render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.roots}>
-        <Paper className={classes.paper} elevation={5}>
-          {
-            this.props.categories.map((category) => {
-              return (
-                <React.Fragment>
-                  <label style={styles.labelTag}>{category === "" ? 'Other' : category}</label>
-                  <Typography variant="h5" component="h3" style={{margin: '1em'}}>
-                    <LinearProgress variant="determinate" value={98.99}/>
-                  </Typography>
-                  <br />
-                </React.Fragment>
-              )
-            })
-          }
-        </Paper>
-      </div>
-    );
+    console.log(this.props.percent);
+
+    return(
+      <React.Fragment>
+        {
+          Object.keys(this.props.percent).forEach(function(key){
+            return(<h1>key</h1>)
+          })
+        }
+      </React.Fragment>
+    )
   }
 }
 

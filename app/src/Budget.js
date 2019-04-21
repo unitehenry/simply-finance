@@ -17,7 +17,8 @@ class Budget extends Component {
         graphs: true,
         questions: false,
         transactions: [],
-        categories: []
+        categories: [],
+        percent: {}
       }
 
   componentDidMount = () => {
@@ -27,12 +28,8 @@ class Budget extends Component {
       .get().then(function(doc) {
         if (doc.exists) {
             const data = doc.data();
-            component.setState({transactions: data.transactions})
-            // console.log("Document data:", doc.data().transactions);
-            // console.log(calcPercent(JSON.stringify(doc.data().transactions)))
             const resultPercent = calcPercent(JSON.stringify(doc.data().transactions));
-            console.log("Final " + JSON.stringify(resultPercent));
-            component.calculateBudget();
+            component.setState({transactions: data.transactions, percent: resultPercent})
         } else {
             console.log("No such document!");
         }
@@ -44,22 +41,6 @@ class Budget extends Component {
     //console.log(calcPercent(JSON.stringify(this.state.transactions[1].items)))
   }
 
-  calculateBudget = () => {
-    this.state.transactions.forEach((transaction) => {
-      transaction.items.forEach((item) => {
-        if(this.state.categories.includes(item.Category)){
-          return;
-        } else{
-          const categories = this.state.categories;
-          categories.push(item.Category);
-          this.setState({categories: categories})
-        }
-      })
-    })
-
-    // console.log(this.state.categories);
-  }
-
   render() {
     return (
       <div>
@@ -68,7 +49,7 @@ class Budget extends Component {
             (
 
             <div style = {styles.header}>
-              <Progress categories={this.state.categories}/>
+              <Progress percent={this.state.percent} />
               <Button variant="contained" style={styles.button2} onClick={()=> {this.setState({graphs: true,questions: true,nameTextField: false,header: false})}} style={styles.button}>
                 Create!
               </Button>
@@ -126,8 +107,6 @@ function calcPercent(oldJSON){
         // console.log(js[item]);
       }
 
-      console.log("SOME " + JSON.stringify(someObj));
-
 
       for (var i = 0; i < someObj.length;i++){
         if (someObj[i].Category != "") {
@@ -161,7 +140,6 @@ function calcPercent(oldJSON){
           percent[key] = parseInt(dict[key]/count*100);
       }
 
-      console.log("PERENT " + JSON.stringify(percent));
       return percent;
 
   }
