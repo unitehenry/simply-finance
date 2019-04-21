@@ -55,9 +55,9 @@ class AddReceiptButton extends Component {
             },
            success: function(data) {
              component.setState({receiptUrl: data.data.link})
-             
+
              $.ajax({
-               url: `http://localhost:8080/transcribeReceipt?image=${data.data.link}`,
+               url: `http://localhost:8080/transcribeReceipt?image=https://i.imgur.com/tElLPXP.png`,
                type: 'GET',
                success: function(data){
                  console.log(data);
@@ -78,7 +78,22 @@ class AddReceiptButton extends Component {
   }
 
   closeDialog = () => {
+    let returnedItems = []; //CALLBACK FROM API
 
+    //API call to server for confirmation goes here (send edits)
+    $.ajax({
+      url: 'http://localhost:8080/classifyData',
+      type: 'GET',
+      contentType: 'applcation/json',
+      crossDomain: true,
+      data: this.state.reviewItems,
+      dataType: 'json',
+      success: function(data){
+        returnedItems = data;
+      }
+    })
+
+    //Pushing to Firebase
     let currentTransactions = [];
     db.collection("users").doc(this.props.uid)
       .get()
@@ -86,14 +101,9 @@ class AddReceiptButton extends Component {
         currentTransactions = doc.data().transactions;
         let newTransaction =  {
             img: this.state.receiptUrl,
-            items: [
-              {
-                name: 'Red Bull',
-                price: 2.25,
-                category: 'Beverage'
-              }
-            ]
+            items: returnedItems
           }
+
         currentTransactions.push(newTransaction);
         db.collection("users").doc(this.props.uid).set({
           transactions: currentTransactions
@@ -105,9 +115,6 @@ class AddReceiptButton extends Component {
             console.error("Error writing document: ", error);
         });
       })
-
-    //API call to server for confirmation goes here (send edits)
-      //Push to firebase here
 
     this.setState({detailsOpen: false})
   }
