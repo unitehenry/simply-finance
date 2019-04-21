@@ -2,7 +2,7 @@
   "name": "simplifi",
   "version": "1.0.0",
   "description": "Simplify your finances",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },

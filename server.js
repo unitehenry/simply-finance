@@ -5,6 +5,9 @@ var bodyParser = require("body-parser");
 var fs = require('fs');
 var request = require('request');
 
+const PORT = 8080 || process.env.PORT;
+// app.set('port', (process.env.PORT || 8080))
+
 const tesseract = require('node-tesseract-ocr');
 var imgur = require('imgur');
 	// Imports the Google Cloud client library
@@ -25,7 +28,7 @@ async function classify(str) {
 
 		const client = new language.LanguageServiceClient();
 		const document = {content: str,type: 'PLAIN_TEXT',};
-	
+
 		client.classifyText({document: document}).then(results => {
 		    const classification = results[0];
 		    classification.categories.forEach(category => {
@@ -89,7 +92,7 @@ app.get('/transcribeReceipt', function(req, res) {
 		psm: 4
 	}
 
-	
+
 	var promise = tesseract.recognize(filename, config);
 
 	promise.then(function(value){
@@ -110,6 +113,6 @@ app.get('/transcribeReceipt', function(req, res) {
 
 
 /* Listen on port 8080 */
-app.listen(8080, function(){
+app.listen(PORT, function(){
 	console.log('Server started at 8080...');
 });
